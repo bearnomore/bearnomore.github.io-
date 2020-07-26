@@ -1,7 +1,7 @@
 //For first plot
 //Define the size of the svg where the first chart is plotted
-var w = 800;
-var h = 600;
+var w = 600;
+var h = 400;
 
 var margin = {top: 50, bottom: 50, left: 20, right: 20};
 var width = w - margin.left - margin.right;
