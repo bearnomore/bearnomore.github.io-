@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>D3: Loading GeoJSON data and generating SVG paths</title>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.min.js"></script>
+    <style type="text/css">
+	  h1 {
+           color: black;
+		   font-family:sans-serif;
+           font-size: 20px;
+         }
+	  p {
+	       color: black;
+		   font-family: sans-serif;
+		   font-size: 14px;
+		   align-txt: left;
+	  }
+	  text {
+            font-family: sans-serif;
+            fill: #000000;
+        }
+
+      table {
+            visibility: hidden;
+            position: absolute;
+            top: 30px;
+            left: 500px;
+            font-family: sans-serif;
+            font-size: 0.7em;
+        }
+		
+
+      tr:nth-child(even) {
+            background-color: #d9d9d9;
+        } 
+		
+	  td {
+          white-space:nowrap;
+        }
+
+      .brushed {
+            fill: #ff3399;
+            stroke: #8e1b54;
+            opacity: 1.0;
+        }
+
+      .non_brushed {
+            fill: #404040;
+            opacity: 0.5;
+        }
+		
+		select {
+            display: block;
+        }
+        .bar {
+            fill: blue;
+            opacity: 0.8;
+			stroke: black;
+        }
+
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: #000;
+            shape-rendering: crispEdges;
+        }
+
+
+    </style>
+  </head>
+  <body>
+    <h1> The age of the countries </h1>
+	<p> Countries are made by humans and their physical ages, instead of the historical ages, 
+	    can be represented by the median age of their own populations.<br>
+	    Check out how old the countries are around the world by hovering your mouse on the map. 
+		What region in general has youngest population? And what region has the oldest?</p>
+	
+    <div id="viz1"> </div>
+	<br>
+    <script type="text/javascript" src="./worldYouth.js"> </script>
+	
+	<h1> What determines the age of a country </h1>
+	<p> The median age of a country is decided by the distribution of different age groups in its population, 
+	    which is directly driven by two factors, the life span of its people and on average how many children its women give birth to. <br>
+        Check the following plot of life expectancy vs. the fertility rate for all countries shown above. Brush the circles to find out country name,
+		region and the median age of that country. 
+        What's the relationship between these two factors? 
+		Does the pattern in this plot match what you find in the previous chart? </p>		
+	
+	<div id="viz2"> </div>
+	<script type="text/javascript" src="./fert_life_medAge.js"> </script>
+	 <!--table for data of brushed elements-->
+     <div id="table">
+        <table>
+            <tr>
+                <th>Country</th>
+				<th>Region</th>
+				<th>Median Age<th>  
+            </tr>
+        </table>
+     </div>
+	 
+	<h1> Age structure grouped by income </h1>
+	<p> From the above scatter plot, you may find out that the life expectancy is negatively correlated with the fertility rate. 
+	    Women in countries with longer life expectancy tend to have less kids on average. 
+		You may also find some regional patterns in the plot such that countries from high income economies (i.e. Europe) commonly have long life expectancy <br>
+		and lower fertility rate, while contries from low income economies (i.e. African countries) show the opposite. 
+		Let's look closer to the age structures grouped by economies. Select different income level in the following bar chart 
+		and see how the distribution of age groups differs between different income economies.
+		
+	<div id="viz3"> </div>	
+	<script type="text/javascript" src="./age_structure_by_income.js"> </script>
+	
+  </body>
+</html>
