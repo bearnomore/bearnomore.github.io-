@@ -118,4 +118,5 @@ d3.csv(fileName, function(data) {
 	var initialData = incomeMap[ incomes[0] ];
 	
 	updateBars(initialData);
+	
 });
