@@ -179,6 +179,8 @@ function populateTableRow(d_row) {
 	  .append("td")
 	  .attr("align", (d, i) => i == 0 ? "left" : "right")
 	  .text(d => d)
+	  .style("fontFamily", "sans-serif")
+	  .style("fontsize", "14px")
 	  .style("background-color",function(d){
 									switch(d) {
 									case regions[0]: return colorMap[0];break;
