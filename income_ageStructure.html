@@ -25,15 +25,7 @@
         }
 		.axis { font: 14px sans-serif; 
 		}
-		.toolTip {
-            position: absolute;
-            display: none;
-            min-width: 80px;
-            height: auto;
-            background: none repeat scroll 0 0 #ffffff;
-            border: 1px solid #6F257F;
-            padding: 14px;
-            text-align: center;
+		
 }
         </style>
     </head>
@@ -106,6 +98,13 @@
                         .append("div")
                         .style("opacity", 0)
                         .attr("class", "tooltip")
+						.style("background-color", "white")
+                        .style("border", "none")
+						.style("position", "absolute")
+                        .style("border-width", "1px")
+                        .style("border-radius", "5px")
+                        .style("padding", "10px")
+						
 				   
                 // Define bar width
 				var barWidth = width/ageFields.length-20;
@@ -128,7 +127,6 @@
 						.style("fill", "#00BFFF")
 						.style("stroke", "#000000")
 						.on("mouseover", mouseover)
-						.on("mousemove", mousemove)
 						.on("mouseleave", mouseleave);
 
                     // Update old ones, already have x / width from before
@@ -150,6 +148,19 @@
                 };	
 				
 				var mouseover = function(d){
+				  
+				  console.log(d3.event.pageY);
+				  var value = d3.select(this).datum();
+				  tooltip.html(value + "%")
+				         .style("opacity", 1)
+						 .style("left", d3.event.pageX + "px")
+						 .style("top", (d3.event.pageY - 20) +"px");
+				  d3.select(this).style("fill", "#0431B4");
+				}
+				
+				
+				/*
+				var mouseover = function(d){
 				    tooltip.style("opacity", 0.8);
 					d3.select(this).style("fill", "#0431B4");
 				}
@@ -162,7 +173,7 @@
 					 tooltip.style("left", (d3.event.pageX) + "px") 
                             .style("top", (d3.event.pageY) + "px")
                             .html(d + "%");
-				}
+				}*/
 				
 				var mouseleave = function(d){
 				    
