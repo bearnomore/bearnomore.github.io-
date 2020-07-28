@@ -23,6 +23,18 @@
             stroke: #000;
             shape-rendering: crispEdges;
         }
+		.axis { font: 14px sans-serif; 
+		}
+		.toolTip {
+            position: absolute;
+            display: none;
+            min-width: 80px;
+            height: auto;
+            background: none repeat scroll 0 0 #ffffff;
+            border: 1px solid #6F257F;
+            padding: 14px;
+            text-align: center;
+}
         </style>
     </head>
 	<body>
@@ -43,9 +55,9 @@
                         incomeMap[income].push( +d[field] );
                     });
                 });
-               console.log(incomeMap);
+               console.log(Object.keys(data[0]).includes(ageFields[0]));
 			   // Define dimensions of chart
-                var margin = {top: 10, right: 30, bottom: 50, left: 60},
+                var margin = {top: 30, right: 30, bottom: 50, left: 60},
 				    svg_dx = 600,
 					svg_dy = 400,
                     width  = svg_dx - margin.left - margin.right,
@@ -68,33 +80,39 @@
                             .append("g")
                             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");	
                 // Add x and y axis
-                var xAxis = svg.append("g")
-                               .attr("transform", "translate(0," + height + ")")
-                               .call(d3.axisBottom(xScale));
+                var xAxis = d3.axisBottom(xScale);
+				var xAxisHandle = svg.append("g")
+				                     .attr("class", "x axis")
+                                     .attr("transform", "translate(0," + height + ")")
+                                     .call(xAxis);
                               
 			    var yAxis = d3.axisLeft(yScale);	
 				var yAxisHandle = svg.append("g")
-                    .attr("class", "y axis")
-                    .call(yAxis);
+                                     .attr("class", "y axis")
+                                     .call(yAxis);
 							   
                 // Add y-axis label
                 
 				svg.append("text")
                    .attr("transform", "rotate(-90)")
-                   .attr("y", -margin.left + 20)
+                   .attr("y", -margin.left + 10)
 				   .attr("x", -margin.top - height/2 + 60)
                    .attr("dy", ".71em")
                    .style("text-anchor", "end")
                    .text("Precentage (%)")
-				   .style("padding-right", "5px")
 				   .style("font-size","16px");
+				
+				var tooltip = d3.select("#viz3")
+                        .append("div")
+                        .style("opacity", 0)
+                        .attr("class", "tooltip")
 				   
                 // Define bar width
-				var barWidth = width/ageFields.length-10;
+				var barWidth = width/ageFields.length-20;
 				   
 				var updateBars = function(data) {
                     // First update the y-axis domain to match data
-                    yScale.domain( [d3.extent(data)[0]-5, d3.extent(data)[1]] );
+                    yScale.domain( [d3.extent(data)[0]-5, d3.extent(data)[1]] ); // need to minus a number such as 5, or the lowest bar won't diaplay
                     yAxisHandle.call(yAxis);
 
                     var bars = svg.selectAll(".bar").data(data);
@@ -108,7 +126,10 @@
                         .attr("y", function(d) { return yScale(d); })
                         .attr("height", function(d) { return height - yScale(d); })
 						.style("fill", "#00BFFF")
-						.style("stroke", "#000000");
+						.style("stroke", "#000000")
+						.on("mouseover", mouseover)
+						.on("mousemove", mousemove)
+						.on("mouseleave", mouseleave);
 
                     // Update old ones, already have x / width from before
                     bars
@@ -127,9 +148,35 @@
 
                     updateBars(newData);
                 };	
-                
+				
+				var mouseover = function(d){
+				    tooltip.style("opacity", 0.8);
+					d3.select(this).style("fill", "#0431B4");
+				}
+				
+				
+				var mousemove = function(d){
+				    
+				    
+					 console.log(d);
+					 tooltip.style("left", (d3.event.pageX) + "px") 
+                            .style("top", (d3.event.pageY) + "px")
+                            .html(d + "%");
+				}
+				
+				var mouseleave = function(d){
+				    
+				    tooltip.transition()
+                            .duration(300)
+                            .style("opacity", 0);
+								      
+		            d3.select(this).style("fill", d? "#00BFFF":"#0431B4");
+				    
+				}
+				
+				
                 // Get names of income groups for the dropdown menu
-                var incomes = Object.keys(incomeMap).sort();
+                var incomes = Object.keys(incomeMap);
 
                 var dropdown = d3.select("#viz3")
                                  .insert("select", "svg")
@@ -149,6 +196,8 @@
 				
                 updateBars(initialData);
             });
+			
+			
 			
 			
         </script>
