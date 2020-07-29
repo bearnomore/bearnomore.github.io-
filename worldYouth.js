@@ -75,18 +75,20 @@ d3.csv("https://raw.githubusercontent.com/bearnomore/CS498Visualization/master/w
         // A function that change this tooltip when the user hover a point.
         // Its opacity is set to 1 for us to see it. Plus it set the text and position of tooltip depending on the datapoint (d)
         var mouseover = function(d) {
-		                              tooltip.style("opacity", 1);
-		                              d3.select(this).style("fill", "yellow");
-									 }
-
-        var mousemove = function(d) {
-			                         var value = d.properties.medianAge;
-									 var country = d.properties.name;
-                                      
-                                     tooltip.style("left", (d3.event.pageX) + "px") 
-                                            .style("top", (d3.event.pageY - 50) + "px")
-											.html("Median Age of " + country + ":"+value);
-                                    }
+			                          var value = d.properties.medianAge;
+									  var country = d.properties.name;
+									  
+			                          d3.select(this).style("fill", "yellow").transition().duration(300).style("opacity", 1);
+									  tooltip.transition()
+									         .duration(300)
+                                             .style("opacity", 1);
+									  tooltip.text("Median Age of " + country + ":"+value)
+									         .style("left", (d3.event.pageX) + "px") 
+                                             .style("top", (d3.event.pageY) + "px");
+											 
+		}
+										
+	
 
         // A function that change this tooltip when the leaves a point by setting the opacity to 0 again
 		
@@ -122,7 +124,6 @@ d3.csv("https://raw.githubusercontent.com/bearnomore/CS498Visualization/master/w
 
                                     })
 		  .on("mouseover", mouseover )
-		  .on("mousemove", mousemove )
           .on("mouseleave", mouseleave );
 		  
       });
