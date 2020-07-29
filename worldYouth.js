@@ -83,9 +83,9 @@ d3.csv("https://raw.githubusercontent.com/bearnomore/CS498Visualization/master/w
 			                         var value = d.properties.medianAge;
 									 var country = d.properties.name;
                                       
-                                      tooltip.style("left", (d3.event.pageX) + "px") 
-                                             .style("top", (d3.event.pageY) + "px")
-											 .html("Median Age of " + country + ":"+value);
+                                     tooltip.style("left", (d3.event.pageX) + "px") 
+                                            .style("top", (d3.event.pageY - 50) + "px")
+											.html("Median Age of " + country + ":"+value);
                                     }
 
         // A function that change this tooltip when the leaves a point by setting the opacity to 0 again
@@ -129,9 +129,34 @@ d3.csv("https://raw.githubusercontent.com/bearnomore/CS498Visualization/master/w
 	  
 	  // Add legend
 	  //create a new SVG in the body
+	  /*
 	  var legend = d3.legendColor().scale(colorScale);
 	  svg.append("g")
          .attr("transform", "translate(20,400)")
          .call(legend);
+	 */
+	 
+	 var legend = svg.selectAll("g.legend")
+                     .data([0, 20, 30, 35, 40, 45])
+                     .enter()
+					 .append("g")
+                     .attr("class", "legend");
+
+     var ls_w = 20, ls_h = 20;
+	 var legend_labels = ["< 20", "20-30", "30-35", "35-40", "40-45", "> 45"];
+     var colors = ["#adebad", "#70db70", "#33cc33", "#248f24", "#145214", "#0a290a" ];	 
+	 
+
+     legend.append("rect")
+           .attr("x", 20)
+           .attr("y", function(d, i){ return h - (i*ls_h) - 2*ls_h - 15 ;})
+           .attr("width", ls_w)
+           .attr("height", ls_h)
+           .style("fill", function(d, i) { return colors[i]; })
+           .style("opacity", 0.8);
 	
+	 legend.append("text")
+           .attr("x", 50)
+           .attr("y", function(d, i){ return h - (i*ls_h) - 2*ls_h ;})
+           .text(function(d, i){ return legend_labels[i]; });
 })
